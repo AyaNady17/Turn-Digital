@@ -9,71 +9,41 @@ class AppTextStyles {
   // Private constructor to prevent instantiation
   AppTextStyles._();
 
-  static final font18blackWight500 = TextStyle(
-    fontSize: 18.sp,
+  static final font24BlackWeight600 = TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeightHelper.medium,
-    // fontFamily: AppStrings.fontFamilyIBMPlexSansArabic,
-    color: AppColorsManager.textColor,
-  );
-  static final font16DarkGreyWeight400 = TextStyle(
-    fontSize: 16.sp,
-    fontWeight: FontWeightHelper.regular,
-    color: AppColorsManager.placeHolderColor,
-  );
-  static final font22MainBlueWeight700 = TextStyle(
-    fontSize: 22.sp,
-    fontWeight: FontWeightHelper.bold,
-    color: AppColorsManager.mainDarkBlue,
-  );
-  static final font22WhiteWeight600 = TextStyle(
-    fontSize: 22.sp,
-    fontWeight: FontWeightHelper.semiBold,
-    color: AppColorsManager.backGroundColor,
-  );
-  static final font14BlueWeight700 = TextStyle(
-    fontSize: 14.sp,
-    fontWeight: FontWeightHelper.bold,
-    fontFamily: AppStrings.cairoFontFamily,
-    color: AppColorsManager.mainDarkBlue,
-  );
-  static final font10blueWeight400 = TextStyle(
-    fontSize: 10.sp,
-    fontWeight: FontWeightHelper.regular,
-    fontFamily: AppStrings.cairoFontFamily,
-    color: AppColorsManager.mainDarkBlue,
-  );
-  static final font14blackWeight400 = TextStyle(
-    fontSize: 14.sp,
-    fontWeight: FontWeightHelper.regular,
-    fontFamily: AppStrings.cairoFontFamily,
-    color: AppColorsManager.textColor,
+    fontFamily: AppStrings.appFontFamily,
+    color: Colors.black,
   );
 
-  static final font20blackWeight600 = TextStyle(
-    fontSize: 20.sp,
-    fontWeight: FontWeightHelper.semiBold,
-    fontFamily: AppStrings.cairoFontFamily,
-    color: AppColorsManager.textColor,
-  );
-  static final font14whiteWeight600 = TextStyle(
+  static final font14GreyWeight400 = TextStyle(
     fontSize: 14.sp,
-    fontWeight: FontWeightHelper.semiBold,
-    fontFamily: AppStrings.cairoFontFamily,
-    color: AppColorsManager.backGroundColor,
-  );
-  static final font12blackWeight400 = TextStyle(
-    fontSize: 12.sp,
     fontWeight: FontWeightHelper.regular,
-    // fontFamily: AppStrings.fontFamilyIBMPlexSansArabic,//cairo
-    color: AppColorsManager.textColor,
+    fontFamily: AppStrings.appFontFamily,
+    color: Color(0xFF747688),
   );
-  static final customTextStyle = TextStyle(
-    fontSize: 14, // 14px
-    fontWeight: FontWeight.w600, // 600 weight
-    height: 17 / 14, // Line height (17px)
-    letterSpacing: 0, // 0% letter spacing
-    color: const Color.fromARGB(216, 1, 36, 64), // Black text color
+
+  static final font16WhiteWeight400 = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeightHelper.medium,
+    fontFamily: AppStrings.appFontFamily,
+    color: Colors.white,
   );
+
+  static final font16GreyWeight500 = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeightHelper.medium,
+    fontFamily: AppStrings.appFontFamily,
+    color: Color(0xFF9D9898),
+  );
+
+  static final font15BlackWeight400 = TextStyle(
+    fontSize: 15.sp,
+    fontWeight: FontWeightHelper.regular,
+    fontFamily: AppStrings.appFontFamily,
+    color: Colors.black,
+  );
+
   TextStyle generateNewTextStyle({
     required double fontSize,
     FontWeight? fontWeight,
