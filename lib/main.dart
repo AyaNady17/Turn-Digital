@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await setUpDependencyInjection();
   runApp(const TurnDigital());
 }
 

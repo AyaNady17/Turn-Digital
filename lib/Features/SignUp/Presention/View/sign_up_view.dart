@@ -1,205 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:turn_digital/Core/DI/dependency_injection.dart';
+import 'package:turn_digital/Core/Global/SharedWidgets/custom_app_button.dart';
+import 'package:turn_digital/Core/Global/SharedWidgets/custom_text_field.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
-import 'package:turn_digital/Core/global/Helpers/extensions.dart';
-import 'package:turn_digital/core/Global/Helpers/functions.dart';
+import 'package:turn_digital/Features/SignUp/Presention/ViewModal/sign_up_cubit.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(toolbarHeight: 0),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: const Icon(Icons.arrow_back),
-              ),
-              const SizedBox(height: 20),
-              Text("Sign up", style: AppTextStyles.font24BlackWeight600),
-              const SizedBox(height: 20),
-              const CustomTextField(
-                hintText: "Full name",
-                assetIcon: 'assets/images/Profile.png',
-              ),
-              const SizedBox(height: 10),
-              const CustomTextField(
-                hintText: "abc@email.com",
-                assetIcon: 'assets/images/Mail.png',
-              ),
-              const SizedBox(height: 10),
-              const CustomTextField(
-                hintText: "Your password",
-                assetIcon: 'assets/images/Lock.png',
-                isPassword: true,
-              ),
-              const SizedBox(height: 10),
-              const CustomTextField(
-                hintText: "Confirm password",
-                assetIcon: 'assets/images/Lock.png',
-                isPassword: true,
-              ),
-              const SizedBox(height: 20),
-              SignUpButton(),
-              const SizedBox(height: 20),
-              Center(
-                child: Text("OR", style: AppTextStyles.font16GreyWeight500),
-              ),
-              const SizedBox(width: 10),
-              const SizedBox(height: 20),
-              SocialLoginButton(
-                text: "Login with Google",
-                icon: "assets/images/google.png",
-                onTap: () {},
-              ),
-              const SizedBox(height: 10),
-              SocialLoginButton(
-                text: "Login with Facebook",
-                icon: "assets/images/google.png",
-                onTap: () {},
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account?",
-                    style: AppTextStyles.font15BlackWeight400,
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      " Sign in",
-                      style: AppTextStyles.font15BlackWeight400.copyWith(
-                        color: Colors.orange,
+    return BlocProvider<SignUpCubit>(
+      create: (context) => getIt<SignUpCubit>(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(toolbarHeight: 0),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(Icons.arrow_back),
+                ),
+                const SizedBox(height: 20),
+                Text("Sign up", style: AppTextStyles.font24BlackWeight600),
+                const SizedBox(height: 20),
+                CustomTextField(
+                  hintText: "Full name",
+                  assetIcon: 'assets/images/Profile.png',
+                  controller: getIt<SignUpCubit>().nameController,
+                ),
+                const SizedBox(height: 10),
+                CustomTextField(
+                  hintText: "abc@email.com",
+                  assetIcon: 'assets/images/Mail.png',
+                  controller: getIt<SignUpCubit>().emailController,
+                ),
+                const SizedBox(height: 10),
+                CustomTextField(
+                  hintText: "Your password",
+                  assetIcon: 'assets/images/Lock.png',
+                  isPassword: true,
+                  controller: getIt<SignUpCubit>().passwordController,
+                ),
+                const SizedBox(height: 10),
+                const CustomTextField(
+                  hintText: "Confirm password",
+                  assetIcon: 'assets/images/Lock.png',
+                  isPassword: true,
+                ),
+                const SizedBox(height: 20),
+                CustomAppButton(
+                  text: "SIGN UP",
+                  onTap: () => getIt<SignUpCubit>().emitSignupStates(),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: Text("OR", style: AppTextStyles.font16GreyWeight500),
+                ),
+                const SizedBox(width: 10),
+                const SizedBox(height: 20),
+                SocialLoginButton(
+                  text: "Login with Google",
+                  icon: "assets/images/google.png",
+                  onTap: () {},
+                ),
+                const SizedBox(height: 10),
+                SocialLoginButton(
+                  text: "Login with Facebook",
+                  icon: "assets/images/google.png",
+                  onTap: () {},
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account?",
+                      style: AppTextStyles.font15BlackWeight400,
+                    ),
+                    GestureDetector(
+                      onTap: () async {},
+                      child: Text(
+                        " Sign in",
+                        style: AppTextStyles.font15BlackWeight400.copyWith(
+                          color: Colors.orange,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomTextField extends StatefulWidget {
-  final String hintText;
-  final String assetIcon;
-  final bool isPassword;
-  final TextEditingController? controller;
-
-  const CustomTextField({
-    super.key,
-    required this.hintText,
-    required this.assetIcon,
-    this.isPassword = false,
-    this.controller,
-  });
-
-  @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
-}
-
-class _CustomTextFieldState extends State<CustomTextField> {
-  bool _obscureText = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 317,
-      height: 56,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE4DFDF), width: 1),
-      ),
-      child: TextField(
-        controller: widget.controller,
-        obscureText: widget.isPassword ? _obscureText : false,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          hintStyle: AppTextStyles.font14GreyWeight400,
-          border: InputBorder.none,
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Image.asset(widget.assetIcon, width: 24, height: 24),
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 16),
-          suffixIcon:
-              widget.isPassword
-                  ? InkWell(
-                    onTap: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    child: Image.asset(
-                      'assets/images/Hidden.png',
-                      width: 24,
-                      height: 24,
-                    ),
-                  ).paddingAll(16)
-                  : null,
-        ),
-      ),
-    );
-  }
-}
-
-class SignUpButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 35.w),
-      width: double.infinity,
-      height: 56.h,
-      decoration: BoxDecoration(
-        color: Color(0xFFF27822), // Orange color
-        borderRadius: BorderRadius.circular(15), // Rounded corners
-        boxShadow: [
-          BoxShadow(
-            color: Color(
-              0x6F7EC9,
-            ).withOpacity(0.25), // Shadow color with 25% opacity
-            offset: Offset(0, 10), // X: 0, Y: 10
-            blurRadius: 35, // Blur 35
-            spreadRadius: 0, // Spread 0
-          ),
-        ],
-      ),
-      child: TextButton(
-        onPressed: () {},
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            horizontalSpacing(40),
-            Center(
-              child: Text("SIGN UP", style: AppTextStyles.font16WhiteWeight400),
-            ),
-            horizontalSpacing(50),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
+                  ],
                 ),
-                width: 30.w,
-                height: 30.h,
-                child: Icon(Icons.arrow_forward, color: Colors.orange),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
