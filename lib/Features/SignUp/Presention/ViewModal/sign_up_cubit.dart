@@ -14,6 +14,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -51,6 +52,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     formKey.currentState?.reset();
     return super.close();
   }
