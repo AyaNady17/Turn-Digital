@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
+import 'package:turn_digital/Features/Home/Presention/View/explore_view.dart';
 
 class NotchedBottomAppBar extends StatefulWidget {
   const NotchedBottomAppBar({super.key});
@@ -21,7 +22,7 @@ class _NotchedBottomAppBarState extends State<NotchedBottomAppBar> {
   }
 
   final List<Widget> _pages = [
-    Center(child: Text("Explore Page")),
+    ExploreView(),
     Center(child: Text("Events Page")),
     Center(child: Text("Map Page")),
     Center(child: Text("Profile Page")),

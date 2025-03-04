@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Features/Home/Presention/View/notched_bottom_nav_bar.dart';
@@ -6,6 +7,8 @@ import 'package:turn_digital/Features/Home/Presention/View/notched_bottom_nav_ba
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpDependencyInjection();
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
   runApp(const TurnDigital());
 }
 

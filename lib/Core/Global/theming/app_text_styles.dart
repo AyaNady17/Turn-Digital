@@ -44,6 +44,27 @@ class AppTextStyles {
     color: Colors.black,
   );
 
+  static final font12WhiteWeight400 = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeightHelper.regular,
+    fontFamily: AppStrings.appFontFamily,
+    color: Colors.white,
+  );
+
+  static final font13WhiteWeight500 = TextStyle(
+    fontSize: 13.sp,
+    fontWeight: FontWeightHelper.medium,
+    fontFamily: AppStrings.appFontFamily,
+    color: Colors.white,
+  );
+
+  static final font18BlackWeight500 = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeightHelper.medium,
+    fontFamily: AppStrings.appFontFamily,
+    color: Colors.black,
+  );
+
   TextStyle generateNewTextStyle({
     required double fontSize,
     FontWeight? fontWeight,

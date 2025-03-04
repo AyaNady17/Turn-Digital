@@ -5,17 +5,11 @@ class AppColorsManager {
   static const Color appPrimaryColor = Color(0xffF27822);
   static const Color appLightGreyColor = Color(0xffE4DFDF);
   static const Color scaffoldBackGroundColor = Color(0xffFEFEFE);
-  static const Color textfieldInsideColor = Color(0xffECF5FF);
-  static const Color textfieldOutsideBorderColor = Color(0xff555555);
-  static Color disAbledTextFieldOutsideBorderColor = Color(
-    0xff555555,
-  ).withAlpha(40);
-  static const Color disAbledIconColor = Color(0xff5688B1);
   static const Color warningColor = Color(0xffCE0000);
-  static const Color doneColor = Color(0xff00B087);
-  static const Color unselectedNavIconColor = Color(0xff909090);
-  static const Color selectedNavIconColor = Color(0xffFEFEFE);
+  static const Color doneColor = Color(0xff29D697);
   static const Color placeHolderColor = Color(0xff777777);
   static const Color textColor = Color(0xff080808);
-  static const Color backGroundColor = Color(0xffFEFEFE);
+  static const Color appBrownColor = Color(0xff524037);
+  static const Color appBurgandyColor = Color(0xff862D28);
+  static const Color appDarkGreyColor = Color(0xff747688);
 }
