@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
+import 'package:turn_digital/Core/Routing/routes.dart';
 import 'package:turn_digital/Features/Home/Presention/View/notched_bottom_nav_bar.dart';
 import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
+import 'package:turn_digital/core/routing/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +27,8 @@ class TurnDigital extends StatelessWidget {
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: SignUpView(),
+        onGenerateRoute: AppRouter.generateRoute,
+        initialRoute: AppRoutes.rSignUp,
       ),
     );
   }

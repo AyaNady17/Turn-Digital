@@ -12,6 +12,7 @@ import 'package:turn_digital/Features/SignUp/Presention/ViewModal/sign_up_cubit.
 import 'package:turn_digital/core/Global/theming/color_manager.dart';
 import 'package:turn_digital/core/global/Helpers/functions.dart';
 import 'package:turn_digital/core/global/Helpers/app_regex.dart';
+import 'package:turn_digital/core/routing/routes.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -120,6 +121,7 @@ class SignUpView extends StatelessWidget {
                           listener: (context, state) {
                             if (state.signupStatus == RequestStatus.success) {
                               showSuccess(state.successMessage);
+                              Navigator.pushNamed(context, AppRoutes.rOtp);
                             }
                             if (state.signupStatus == RequestStatus.failure) {
                               showError(state.errorMessage!);
