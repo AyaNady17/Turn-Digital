@@ -6,21 +6,15 @@ class ApiErrorHandler {
     if (error is DioException) {
       switch (error.type) {
         case DioExceptionType.connectionError:
-          return ApiErrorModel(
-            errors: ["Connection to server failed"],
-          );
+          return ApiErrorModel(errors: ["Connection to server failed"]);
         case DioExceptionType.cancel:
-          return ApiErrorModel(
-            errors: ["Request to the server was cancelled"],
-          );
+          return ApiErrorModel(errors: ["Request to the server was cancelled"]);
         case DioExceptionType.connectionTimeout:
-          return ApiErrorModel(
-            errors: ["Connection timeout with the server"],
-          );
+          return ApiErrorModel(errors: ["Connection timeout with the server"]);
         case DioExceptionType.unknown:
           return ApiErrorModel(
             errors: [
-              "Connection to the server failed due to internet connection"
+              "Connection to the server failed due to internet connection",
             ],
           );
         case DioExceptionType.receiveTimeout:
@@ -34,14 +28,10 @@ class ApiErrorHandler {
             errors: ["Send timeout in connection with the server"],
           );
         default:
-          return ApiErrorModel(
-            errors: ["Something went wrong"],
-          );
+          return ApiErrorModel(errors: ["Something went wrong"]);
       }
     } else {
-      return ApiErrorModel(
-        errors: ["Unknown error occurred"],
-      );
+      return ApiErrorModel(errors: ["Unknown error occurred"]);
     }
   }
 
@@ -50,9 +40,7 @@ class ApiErrorHandler {
     if (data is Map<String, dynamic>) {
       return ApiErrorModel.fromJson(data);
     } else {
-      return ApiErrorModel(
-        errors: ["Unknown error occurred"],
-      );
+      return ApiErrorModel(errors: ["Unknown error occurred"]);
     }
   }
 }

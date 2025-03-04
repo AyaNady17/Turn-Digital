@@ -38,7 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
         emit(
           state.copyWith(
             requestStatus: RequestStatus.failure,
-            responseMessage: error.errors.first,
+            responseMessage: error.message,
             isLoadingMore: false,
           ),
         );

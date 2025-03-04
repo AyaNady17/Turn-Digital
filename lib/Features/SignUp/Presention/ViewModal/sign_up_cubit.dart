@@ -40,7 +40,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         emit(
           state.copyWith(
             signupStatus: RequestStatus.failure,
-            errorMessage: error.errors.first,
+            errorMessage: error.message,
           ),
         );
       },

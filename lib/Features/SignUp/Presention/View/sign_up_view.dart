@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
+import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
+import 'package:turn_digital/Core/Global/Helpers/app_toasts.dart';
 import 'package:turn_digital/Core/Global/SharedWidgets/custom_app_button.dart';
 import 'package:turn_digital/Core/Global/SharedWidgets/custom_text_field.dart';
+import 'package:turn_digital/Core/Global/app_strings.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Features/SignUp/Presention/ViewModal/sign_up_cubit.dart';
 import 'package:turn_digital/core/Global/theming/color_manager.dart';
 import 'package:turn_digital/core/global/Helpers/functions.dart';
+import 'package:turn_digital/core/global/Helpers/app_regex.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -29,84 +33,156 @@ class SignUpView extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.arrow_back),
-                  ),
-                  verticalSpacing(20),
-                  Text("Sign up", style: AppTextStyles.font24BlackWeight600),
-                  verticalSpacing(20),
-                  CustomTextField(
-                    hintText: "Full name",
-                    prefixIconPath: 'assets/images/Profile.png',
-                    controller: getIt<SignUpCubit>().nameController,
-                  ),
-                  verticalSpacing(10),
-                  CustomTextField(
-                    hintText: "abc@email.com",
-                    prefixIconPath: 'assets/images/Mail.png',
-                    controller: getIt<SignUpCubit>().emailController,
-                  ),
-                  verticalSpacing(10),
-                  CustomTextField(
-                    hintText: "Your password",
-                    prefixIconPath: 'assets/images/Lock.png',
-                    obscureText: true,
-                    controller: getIt<SignUpCubit>().passwordController,
-                  ),
-                  verticalSpacing(10),
-                  CustomTextField(
-                    hintText: "Confirm password",
-                    prefixIconPath: 'assets/images/Lock.png',
-                    obscureText: true,
-                    controller: getIt<SignUpCubit>().confirmPasswordController,
-                  ),
-                  verticalSpacing(20),
-                  CustomAppButton(
-                    text: "SIGN UP",
-                    onTap: () => getIt<SignUpCubit>().emitSignupStates(),
-                  ),
-                  verticalSpacing(20),
-                  Center(
-                    child: Text("OR", style: AppTextStyles.font16GreyWeight500),
-                  ),
-                  const SizedBox(width: 10),
-                  verticalSpacing(20),
-                  SocialLoginButton(
-                    text: "Login with Google",
-                    icon: "assets/images/google.png",
-                    onTap: () {},
-                  ),
-                  verticalSpacing(10),
-                  SocialLoginButton(
-                    text: "Login with Facebook",
-                    icon: "assets/images/google.png",
-                    onTap: () {},
-                  ),
-                  verticalSpacing(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Already have an account?",
-                        style: AppTextStyles.font15BlackWeight400,
-                      ),
-                      GestureDetector(
-                        onTap: () async {},
-                        child: Text(
-                          " Sign in",
-                          style: AppTextStyles.font15BlackWeight400.copyWith(
-                            color: AppColorsManager.appPrimaryColor,
+              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
+              child: BlocBuilder<SignUpCubit, SignUpState>(
+                builder: (context, state) {
+                  final cubit = context.read<SignUpCubit>();
+
+                  return Form(
+                    key: cubit.formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back),
+                        ),
+                        verticalSpacing(20),
+                        Text(
+                          AppStrings.tSignUp,
+                          style: AppTextStyles.font24BlackWeight600,
+                        ),
+                        verticalSpacing(20),
+                        CustomTextField(
+                          hintText: AppStrings.tNameHint,
+                          prefixIconPath: 'assets/images/Profile.png',
+                          controller: cubit.nameController,
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                AppRegex.isOnlyWhiteSpaces(value)) {
+                              return "Full name cannot be empty";
+                            }
+                            return null;
+                          },
+                        ),
+                        verticalSpacing(10),
+                        CustomTextField(
+                          hintText: AppStrings.tEmailHint,
+                          prefixIconPath: 'assets/images/Mail.png',
+                          controller: cubit.emailController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Email cannot be empty";
+                            } else if (!AppRegex.isEmailValid(value)) {
+                              return "Enter a valid email";
+                            }
+                            return null;
+                          },
+                        ),
+                        verticalSpacing(10),
+                        CustomTextField(
+                          hintText: AppStrings.tPasswordHint,
+                          prefixIconPath: 'assets/images/Lock.png',
+                          isPassword: true,
+                          controller: cubit.passwordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password cannot be empty";
+                            } else if (!AppRegex.isPasswordValid(value)) {
+                              return "Password must have 8+ chars, uppercase, lowercase, number & special char";
+                            }
+                            return null;
+                          },
+                        ),
+                        verticalSpacing(10),
+                        CustomTextField(
+                          hintText: AppStrings.tConfirmPasswordHint,
+                          prefixIconPath: 'assets/images/Lock.png',
+                          isPassword: true,
+                          controller: cubit.confirmPasswordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Confirm password cannot be empty";
+                            } else if (value != cubit.passwordController.text) {
+                              return "Passwords do not match";
+                            }
+                            return null;
+                          },
+                        ),
+                        verticalSpacing(20),
+                        BlocConsumer<SignUpCubit, SignUpState>(
+                          listenWhen:
+                              (previous, current) =>
+                                  current.signupStatus ==
+                                      RequestStatus.success ||
+                                  current.signupStatus == RequestStatus.failure,
+                          listener: (context, state) {
+                            if (state.signupStatus == RequestStatus.success) {
+                              showSuccess(state.successMessage);
+                            }
+                            if (state.signupStatus == RequestStatus.failure) {
+                              showError(state.errorMessage!);
+                            }
+                          },
+                          builder: (context, state) {
+                            return CustomAppButton(
+                              text: AppStrings.tSIGNup,
+                              onTap: () {
+                                if (cubit.formKey.currentState?.validate() ??
+                                    false) {
+                                  cubit.emitSignupStates();
+                                }
+                              },
+                              isLoading:
+                                  state.signupStatus == RequestStatus.loading,
+                            );
+                          },
+                        ),
+                        verticalSpacing(20),
+                        Center(
+                          child: Text(
+                            "OR",
+                            style: AppTextStyles.font16GreyWeight500,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(width: 10),
+                        verticalSpacing(20),
+                        SocialLoginButton(
+                          text: AppStrings.tLoginGoogle,
+                          icon: "assets/images/google.png",
+                          onTap: () {},
+                        ),
+                        verticalSpacing(10),
+                        SocialLoginButton(
+                          text: AppStrings.tLoginFacebook,
+                          icon: "assets/images/google.png",
+                          onTap: () {},
+                        ),
+                        verticalSpacing(20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppStrings.tAlreadyHaveAccount,
+                              style: AppTextStyles.font15BlackWeight400,
+                            ),
+                            GestureDetector(
+                              onTap: () async {},
+                              child: Text(
+                                " Sign in",
+                                style: AppTextStyles.font15BlackWeight400
+                                    .copyWith(
+                                      color: AppColorsManager.appPrimaryColor,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ),
