@@ -10,7 +10,6 @@ import 'package:turn_digital/Features/Home/Presention/View/Widgets/explore_custo
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
 import 'package:turn_digital/core/global/Helpers/extensions.dart';
 import 'package:turn_digital/core/global/Helpers/functions.dart';
-import 'package:intl/intl.dart';
 
 class ExploreView extends StatelessWidget {
   const ExploreView({super.key});

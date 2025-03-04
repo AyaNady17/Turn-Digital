@@ -8,26 +8,38 @@ class HomeCubit extends Cubit<HomeState> {
 
   final HomeRepo _homeRepo;
 
-  Future<void> getEvents({int page = 1, int limit = 10}) async {
-    emit(state.copyWith(requestStatus: RequestStatus.loading));
+  Future<void> getEvents({int page = 1, bool isLoadMore = false}) async {
+    if (isLoadMore) {
+      emit(state.copyWith(isLoadingMore: true));
+    } else {
+      emit(state.copyWith(requestStatus: RequestStatus.loading));
+    }
 
+    final limit = 10;
     final response = await _homeRepo.getEventsList(page: page, limit: limit);
 
     response.when(
-      success: (response) async {
+      success: (response) {
+        final newEvents = response.responseData.events;
         emit(
           state.copyWith(
             requestStatus: RequestStatus.success,
-            eventsList: response.responseData.events,
-            responseMessage: response.message,
+            eventsList:
+                isLoadMore ? [...state.eventsList, ...newEvents] : newEvents,
+            currentPage: page,
+            hasMore:
+                newEvents.length ==
+                limit, // If the response is full, there might be more
+            isLoadingMore: false,
           ),
         );
       },
       failure: (error) {
         emit(
           state.copyWith(
-            responseMessage: error.errors.first,
             requestStatus: RequestStatus.failure,
+            responseMessage: error.errors.first,
+            isLoadingMore: false,
           ),
         );
       },

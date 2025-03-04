@@ -165,25 +165,56 @@ class EventCard extends StatelessWidget {
   }
 }
 
-class EventListView extends StatelessWidget {
+class EventListView extends StatefulWidget {
   const EventListView({super.key});
+
+  @override
+  _EventListViewState createState() => _EventListViewState();
+}
+
+class _EventListViewState extends State<EventListView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final cubit = context.read<HomeCubit>();
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 100 &&
+        !cubit.state.isLoadingMore &&
+        cubit.state.hasMore) {
+      cubit.getEvents(page: cubit.state.currentPage + 1, isLoadMore: true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        if (state.requestStatus == RequestStatus.loading) {
+        if (state.requestStatus == RequestStatus.loading &&
+            state.eventsList.isEmpty) {
           return const Center(child: CircularProgressIndicator());
         } else if (state.requestStatus == RequestStatus.failure) {
           return Center(child: Text(state.responseMessage));
         }
+
         return SizedBox(
-          width: double.infinity,
           height: 255.h,
           child: ListView.builder(
+            controller: _scrollController,
             scrollDirection: Axis.horizontal,
-            itemCount: state.eventsList.length,
+            itemCount: state.eventsList.length + (state.isLoadingMore ? 1 : 0),
             itemBuilder: (context, index) {
+              if (index == state.eventsList.length) {
+                return const SizedBox(
+                  width: 50,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
               return Padding(
                 padding: EdgeInsets.only(right: 12.w),
                 child: EventCard(event: state.eventsList[index]),
@@ -193,6 +224,12 @@ class EventListView extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
