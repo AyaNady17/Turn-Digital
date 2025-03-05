@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Routing/routes.dart';
 import 'package:turn_digital/Features/Home/Presention/View/explore_view.dart';
+import 'package:turn_digital/Features/Home/Presention/View/see_all_events_view.dart';
+import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
 import 'package:turn_digital/Features/OTP/Presention/View/otp_verification_view.dart';
 import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
 
@@ -21,6 +25,15 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => OTPVerificationScreen());
       case AppRoutes.rHome:
         return MaterialPageRoute(builder: (_) => ExploreView());
+
+      case AppRoutes.rSeeAllEvents:
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider.value(
+                value: getIt<HomeCubit>(),
+                child: SeeAllEventsView(),
+              ),
+        );
 
       default:
         return MaterialPageRoute(builder: (_) => NotFoundView());

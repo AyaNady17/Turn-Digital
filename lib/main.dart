@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Routing/routes.dart';
+import 'package:turn_digital/Features/Home/Presention/View/explore_view.dart';
 import 'package:turn_digital/Features/Home/Presention/View/notched_bottom_nav_bar.dart';
 import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
 import 'package:turn_digital/core/routing/app_router.dart';
@@ -26,9 +27,9 @@ class TurnDigital extends StatelessWidget {
       splitScreenMode: true,
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SignUpView(),
+        home: ExploreView(),
         onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: AppRoutes.rSignUp,
+        //  initialRoute: AppRoutes.rSignUp,
       ),
     );
   }

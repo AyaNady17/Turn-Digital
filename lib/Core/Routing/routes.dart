@@ -5,4 +5,5 @@ class AppRoutes {
   static const rSignUp = "/signUp";
   static const rOtp = "/otp";
   static const rHome = "/home";
+  static const rSeeAllEvents = "/seeAllEvents";
 }

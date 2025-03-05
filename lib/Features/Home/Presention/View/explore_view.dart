@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
+import 'package:turn_digital/Core/Routing/routes.dart';
 import 'package:turn_digital/Features/Home/Presention/View/Widgets/event_card.dart';
 import 'package:turn_digital/Features/Home/Presention/View/Widgets/explore_custom_app_bar.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
@@ -45,9 +46,16 @@ class ExploreView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(
-                          'See All',
-                          style: AppTextStyles.font14GreyWeight400,
+                        InkWell(
+                          onTap:
+                              () => Navigator.pushNamed(
+                                context,
+                                AppRoutes.rSeeAllEvents,
+                              ),
+                          child: Text(
+                            'See All',
+                            style: AppTextStyles.font14GreyWeight400,
+                          ),
                         ),
                         Icon(
                           Icons.arrow_right,
