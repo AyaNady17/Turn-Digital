@@ -6,27 +6,10 @@ import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
+import 'package:turn_digital/Features/Home/Presention/View/event_details_screen.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart';
 import 'package:turn_digital/core/global/theming/app_text_styles.dart';
-
-class Event {
-  final String title;
-  final String date;
-  final String month;
-  final String imagePath;
-  final String location;
-  final int attendeeCount;
-
-  Event({
-    required this.title,
-    required this.date,
-    required this.month,
-    required this.imagePath,
-    required this.location,
-    required this.attendeeCount,
-  });
-}
 
 class EventCard extends StatelessWidget {
   final Events event;
@@ -217,7 +200,19 @@ class _EventListViewState extends State<EventListView> {
               }
               return Padding(
                 padding: EdgeInsets.only(right: 12.w),
-                child: EventCard(event: state.eventsList[index]),
+                child: InkWell(
+                  child: EventCard(event: state.eventsList[index]),
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => EventDetailsScreen(
+                                event: state.eventsList[index],
+                              ),
+                        ),
+                      ),
+                ),
               );
             },
           ),
