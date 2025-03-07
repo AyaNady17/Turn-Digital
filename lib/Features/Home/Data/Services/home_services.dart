@@ -3,6 +3,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:turn_digital/Core/Networking/api_constants.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_event_details_response_model.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
+import 'package:turn_digital/Features/Home/Data/Models/get_organizer_details_reponse_model.dart';
 
 part 'home_services.g.dart';
 
@@ -19,5 +20,10 @@ abstract class HomeServices {
   @GET(ApiConstants.getEventDetailsEndPoint)
   Future<GetEventDetailsResponseModel> getEventDetails(
     @Path('eventId') int eventId,
+  );
+
+  @GET(ApiConstants.getOrganizerDetailsEndPoint)
+  Future<GetOrganizerDetailsReponseModel> getOrganizerDetails(
+    @Path('id') int organizerId,
   );
 }

@@ -5,18 +5,20 @@ import 'package:turn_digital/Core/Routing/routes.dart';
 import 'package:turn_digital/Features/Home/Presention/View/explore_view.dart';
 import 'package:turn_digital/Features/Home/Presention/View/see_all_events_view.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
+import 'package:turn_digital/Features/Login/login_view.dart';
 import 'package:turn_digital/Features/OTP/Presention/View/otp_verification_view.dart';
 import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
+import 'package:turn_digital/Features/Splash/splash.dart';
 
 class AppRouter {
   static Route generateRoute(RouteSettings setting) {
     switch (setting.name) {
       case AppRoutes.rSplash:
-        return MaterialPageRoute(builder: (_) => Container());
+        return MaterialPageRoute(builder: (_) => SplashScreen());
       case AppRoutes.rOnBoarding:
         return MaterialPageRoute(builder: (_) => Container());
       case AppRoutes.rLogin:
-        return MaterialPageRoute(builder: (_) => Container());
+        return MaterialPageRoute(builder: (_) => LoginScreen());
 
       case AppRoutes.rSignUp:
         return MaterialPageRoute(builder: (_) => SignUpView());

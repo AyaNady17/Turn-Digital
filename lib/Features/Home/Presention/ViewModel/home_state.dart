@@ -2,38 +2,46 @@ import 'package:equatable/equatable.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_event_details_response_model.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
+import 'package:turn_digital/Features/Home/Data/Models/get_organizer_details_reponse_model.dart';
+import 'package:turn_digital/Features/Home/Presention/View/organizer_screen.dart';
 
 class HomeState extends Equatable {
   final List<Events> eventsList;
   final RequestStatus requestStatus;
+  final RequestStatus requestStatusOrganizer;
   final String responseMessage;
   final int currentPage;
   final bool hasMore;
   final bool isLoadingMore;
   final EventDetailsModel? eventDetails;
   final RequestStatus eventDetailsRequestStatus;
+  final OrganizerDetailsModel? organizerModel;
 
   const HomeState({
     required this.eventsList,
     required this.requestStatus,
     required this.responseMessage,
+    this.requestStatusOrganizer = RequestStatus.initial,
     this.currentPage = 1,
     this.hasMore = false,
     this.isLoadingMore = false,
     this.eventDetails = null,
     this.eventDetailsRequestStatus = RequestStatus.initial,
+    this.organizerModel,
   });
 
   factory HomeState.initial() {
     return HomeState(
       responseMessage: '',
       requestStatus: RequestStatus.initial,
+      requestStatusOrganizer: RequestStatus.initial,
       eventsList: [],
       currentPage: 1,
       hasMore: false,
       isLoadingMore: false,
       eventDetails: null,
       eventDetailsRequestStatus: RequestStatus.initial,
+      organizerModel: null,
     );
   }
 
@@ -46,6 +54,8 @@ class HomeState extends Equatable {
     bool? hasMore,
     EventDetailsModel? eventDetails,
     RequestStatus? eventDetailsRequestStatus,
+    RequestStatus? requestStatusOrganizer,
+    OrganizerDetailsModel? organizerModel,
   }) {
     return HomeState(
       eventsList: eventsList ?? this.eventsList,
@@ -57,6 +67,9 @@ class HomeState extends Equatable {
       eventDetails: eventDetails ?? this.eventDetails,
       eventDetailsRequestStatus:
           eventDetailsRequestStatus ?? this.eventDetailsRequestStatus,
+      requestStatusOrganizer:
+          requestStatusOrganizer ?? this.requestStatusOrganizer,
+      organizerModel: organizerModel ?? this.organizerModel,
     );
   }
 
@@ -70,5 +83,7 @@ class HomeState extends Equatable {
     isLoadingMore,
     eventDetails,
     eventDetailsRequestStatus,
+    requestStatusOrganizer,
+    organizerModel,
   ];
 }

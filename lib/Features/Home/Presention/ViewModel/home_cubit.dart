@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Features/Home/Data/Repository/home_repo.dart';
+import 'package:turn_digital/Features/Home/Presention/View/organizer_screen.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -65,6 +66,31 @@ class HomeCubit extends Cubit<HomeState> {
         emit(
           state.copyWith(
             eventDetailsRequestStatus: RequestStatus.failure,
+            responseMessage: error.message,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getOrganizerDetails(int organizerId) async {
+    emit(state.copyWith(requestStatusOrganizer: RequestStatus.loading));
+    final response = await _homeRepo.getOrganizerDetails(
+      organizerId: organizerId,
+    );
+    response.when(
+      success: (response) {
+        emit(
+          state.copyWith(
+            requestStatusOrganizer: RequestStatus.success,
+            organizerModel: response.organizerDetailsModel,
+          ),
+        );
+      },
+      failure: (error) {
+        emit(
+          state.copyWith(
+            requestStatusOrganizer: RequestStatus.failure,
             responseMessage: error.message,
           ),
         );

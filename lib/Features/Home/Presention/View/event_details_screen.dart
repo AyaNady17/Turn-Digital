@@ -5,6 +5,7 @@ import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
+import 'package:turn_digital/Features/Home/Presention/View/organizer_screen.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart';
 import 'package:turn_digital/core/global/Helpers/functions.dart';
@@ -63,6 +64,17 @@ class EventDetailsScreen extends StatelessWidget {
                               title: event.organizer.name,
                               subtitle: 'Organizer',
                               textOfButton: 'Follow',
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => OrganizerScreen(
+                                          organizerId: event.organizer.id,
+                                        ),
+                                  ),
+                                );
+                              },
                             ),
                             verticalSpacing(22),
                             AboutEvent(aboutEvent: event.aboutEvent),
@@ -198,7 +210,7 @@ class EventDetailsRow extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(9),
+            padding: icon != null ? null : const EdgeInsets.all(9),
             height: 50,
             width: 50,
             decoration: BoxDecoration(

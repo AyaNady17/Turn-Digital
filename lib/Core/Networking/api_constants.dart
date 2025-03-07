@@ -7,4 +7,5 @@ class ApiConstants {
   static const signUpEndPoint = "/users/register";
   static const getEventsEndpoint = '/events';
   static const getEventDetailsEndPoint = '/events/{eventId}';
+  static const getOrganizerDetailsEndPoint = '/organizers/{id}';
 }

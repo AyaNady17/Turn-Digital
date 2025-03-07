@@ -34,7 +34,7 @@ OrganizerDetailsModel _$OrganizerDetailsModelFromJson(
   about: json['about'] as String,
   events:
       (json['events'] as List<dynamic>)
-          .map((e) => Events.fromJson(e as Map<String, dynamic>))
+          .map((e) => OrganizerEvent.fromJson(e as Map<String, dynamic>))
           .toList(),
   reviews:
       (json['reviews'] as List<dynamic>)
@@ -60,7 +60,7 @@ Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
   reviewerName: json['reviewer_name'] as String,
   rate: (json['rate'] as num).toInt(),
   review: json['review'] as String,
-  reviewDate: json['reviewDate'] as String,
+  reviewDate: json['review_date'] as String,
 );
 
 Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
@@ -69,5 +69,21 @@ Map<String, dynamic> _$ReviewToJson(Review instance) => <String, dynamic>{
   'reviewer_name': instance.reviewerName,
   'rate': instance.rate,
   'review': instance.review,
-  'reviewDate': instance.reviewDate,
+  'review_date': instance.reviewDate,
 };
+
+OrganizerEvent _$OrganizerEventFromJson(Map<String, dynamic> json) =>
+    OrganizerEvent(
+      eventId: (json['id'] as num).toInt(),
+      eventName: json['title'] as String,
+      eventPicture: json['picture'] as String,
+      eventDate: json['date'] as String,
+    );
+
+Map<String, dynamic> _$OrganizerEventToJson(OrganizerEvent instance) =>
+    <String, dynamic>{
+      'id': instance.eventId,
+      'picture': instance.eventPicture,
+      'date': instance.eventDate,
+      'title': instance.eventName,
+    };

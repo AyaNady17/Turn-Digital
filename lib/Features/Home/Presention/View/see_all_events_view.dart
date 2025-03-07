@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
@@ -155,14 +154,14 @@ class HorizontalEventCard extends StatelessWidget {
   final String imageUrl;
   final String dateTime;
   final String title;
-  final String location;
+  final String? location;
 
   const HorizontalEventCard({
     super.key,
     required this.imageUrl,
     required this.dateTime,
     required this.title,
-    required this.location,
+    this.location,
   });
 
   @override
@@ -214,21 +213,23 @@ class HorizontalEventCard extends StatelessWidget {
                   maxLines: 2,
                 ),
                 verticalSpacing(4),
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: Colors.grey, size: 14.w),
-                    SizedBox(width: 4.w),
-                    Expanded(
-                      child: Text(
-                        location,
-                        style: AppTextStyles.font14GreyWeight400.copyWith(
-                          fontSize: 13.sp,
+                location != null
+                    ? Row(
+                      children: [
+                        Icon(Icons.location_on, color: Colors.grey, size: 14.w),
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            location!,
+                            style: AppTextStyles.font14GreyWeight400.copyWith(
+                              fontSize: 13.sp,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
+                      ],
+                    )
+                    : SizedBox.shrink(),
               ],
             ),
           ),

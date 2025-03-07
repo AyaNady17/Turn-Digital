@@ -29,7 +29,7 @@ class OrganizerDetailsModel {
   @JsonKey(name: 'number_of_followers')
   int numberOfFollowers;
   String about;
-  List<Events> events;
+  List<OrganizerEvent> events;
   List<Review> reviews;
 
   factory OrganizerDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -56,6 +56,7 @@ class Review {
   String reviewerName;
   int rate;
   String review;
+  @JsonKey(name: 'review_date')
   String reviewDate;
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
@@ -67,5 +68,26 @@ class Review {
     required this.rate,
     required this.review,
     required this.reviewDate,
+  });
+}
+
+@JsonSerializable()
+class OrganizerEvent {
+  @JsonKey(name: 'id')
+  int eventId;
+  @JsonKey(name: 'picture')
+  String eventPicture;
+  @JsonKey(name: 'date')
+  String eventDate;
+  @JsonKey(name: 'title')
+  String eventName;
+  factory OrganizerEvent.fromJson(Map<String, dynamic> json) =>
+      _$OrganizerEventFromJson(json);
+
+  OrganizerEvent({
+    required this.eventId,
+    required this.eventName,
+    required this.eventPicture,
+    required this.eventDate,
   });
 }

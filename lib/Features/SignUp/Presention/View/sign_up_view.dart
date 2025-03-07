@@ -170,7 +170,12 @@ class SignUpView extends StatelessWidget {
                               style: AppTextStyles.font15BlackWeight400,
                             ),
                             GestureDetector(
-                              onTap: () async {},
+                              onTap: () async {
+                                await Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.rLogin,
+                                );
+                              },
                               child: Text(
                                 " Sign in",
                                 style: AppTextStyles.font15BlackWeight400

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
-import 'package:turn_digital/Features/Home/Presention/View/Widgets/category_button.dart';
 
 class ExploreScreenCustomAppBar extends StatelessWidget {
   const ExploreScreenCustomAppBar({super.key});
@@ -11,7 +10,12 @@ class ExploreScreenCustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
+      padding: EdgeInsets.only(
+        left: 16.w,
+        right: 16.w,
+        top: 16.h,
+        bottom: 35.h,
+      ),
       decoration: BoxDecoration(
         color: AppColorsManager.appPrimaryColor,
         borderRadius: BorderRadius.only(
@@ -93,28 +97,6 @@ class ExploreScreenCustomAppBar extends StatelessWidget {
             ],
           ),
           verticalSpacing(20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CategoryButton(
-                label: "Sports",
-                color: AppColorsManager.appBurgandyColor,
-                icon: "assets/images/sports_icon.png",
-              ),
-              SizedBox(width: 10.w),
-              CategoryButton(
-                label: "Music",
-                color: AppColorsManager.appBrownColor,
-                icon: "assets/images/music_icon.png",
-              ),
-              SizedBox(width: 10.w),
-              CategoryButton(
-                label: "Food",
-                color: AppColorsManager.doneColor,
-                icon: "assets/images/food_icon.png",
-              ),
-            ],
-          ),
         ],
       ),
     );

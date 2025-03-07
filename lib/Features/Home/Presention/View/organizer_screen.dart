@@ -1,48 +1,45 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
+import 'package:turn_digital/Features/Home/Data/Models/get_organizer_details_reponse_model.dart';
+import 'package:turn_digital/Features/Home/Presention/View/Widgets/organizer_review_list.dart';
+import 'package:turn_digital/Features/Home/Presention/View/see_all_events_view.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart';
 
-class OrganizerScreen extends StatefulWidget {
-  const OrganizerScreen({super.key});
-
-  @override
-  State<OrganizerScreen> createState() => _OrganizerScreenState();
-}
-
-class _OrganizerScreenState extends State<OrganizerScreen> {
-  final int organizerId = 1;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class OrganizerScreen extends StatelessWidget {
+  const OrganizerScreen({super.key, required this.organizerId});
+  final int organizerId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeCubit>(
-      create:
-          (context) =>
-              context.read<HomeCubit>()
-                ..emitOrganizerDetails(organizerId: organizerId),
+      create: (context) => getIt<HomeCubit>()..getOrganizerDetails(organizerId),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           final organizerModel = state.organizerModel;
           if (state.requestStatusOrganizer == RequestStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
+            return Scaffold(
+              backgroundColor: Colors.white,
+              body: const Center(child: CircularProgressIndicator()),
+            );
           }
           return DefaultTabController(
             length: 3,
             child: Scaffold(
+              backgroundColor: Colors.white,
               appBar: AppBar(
+                backgroundColor: Colors.white,
                 actions: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     icon: const Icon(Icons.more_vert),
                   ),
                 ],
@@ -62,18 +59,21 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
                       children: [
                         OrganizerButton(
                           text: 'Follow',
-                          icon: Icons.person_add_alt,
-                          color: Colors.blue,
+                          icon: 'assets/images/add_person_icon.png',
+                          color: AppColorsManager.appPrimaryColor,
                         ),
                         SizedBox(width: 10),
-                        OrganizerButton(text: 'Message', icon: Icons.message),
+                        OrganizerButton(
+                          text: 'Message',
+                          icon: 'assets/images/message_icon.png',
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
                     const TabBar(
-                      labelColor: Colors.blue,
+                      labelColor: AppColorsManager.appPrimaryColor,
                       unselectedLabelColor: Colors.grey,
-                      indicatorColor: Colors.blue,
+                      indicatorColor: AppColorsManager.appPrimaryColor,
                       tabs: [
                         Tab(text: 'ABOUT'),
                         Tab(text: 'EVENTS'),
@@ -85,9 +85,9 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
                         padding: const EdgeInsets.all(13.0),
                         child: TabBarView(
                           children: [
-                            Text(organizerModel.about),
-                            const Center(child: Text("Events List")),
-                            const Center(child: Text("Reviews List")),
+                            OrganizerAbout(organizerModel: organizerModel),
+                            OrganizerEventsList(organizerModel: organizerModel),
+                            OrganizerReviewList(),
                           ],
                         ),
                       ),
@@ -98,6 +98,54 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class OrganizerEventsList extends StatelessWidget {
+  const OrganizerEventsList({super.key, required this.organizerModel});
+
+  final OrganizerDetailsModel? organizerModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: organizerModel!.events.length,
+      itemBuilder: (context, index) {
+        final event = organizerModel!.events[index];
+        return HorizontalEventCard(
+          imageUrl: event.eventPicture,
+          dateTime: formatEventDate(event.eventDate),
+          title: event.eventName,
+        );
+      },
+    );
+  }
+}
+
+class OrganizerAbout extends StatelessWidget {
+  const OrganizerAbout({super.key, required this.organizerModel});
+
+  final OrganizerDetailsModel? organizerModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: AppTextStyles.font15BlackWeight400,
+        children: [
+          TextSpan(
+            text: organizerModel!.about,
+            style: AppTextStyles.font15BlackWeight400,
+          ),
+          TextSpan(
+            text: 'Read More',
+            style: AppTextStyles.font15BlackWeight400.copyWith(
+              color: AppColorsManager.appPrimaryColor,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -176,7 +224,7 @@ class OrganizerButton extends StatelessWidget {
     this.color,
   });
   final String text;
-  final IconData icon;
+  final String icon;
   final Color? color;
 
   @override
@@ -192,12 +240,14 @@ class OrganizerButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            Image.asset(
               icon,
               color:
                   color == AppColorsManager.appPrimaryColor
                       ? Colors.white
                       : AppColorsManager.appPrimaryColor,
+              height: 22,
+              width: 22,
             ),
             horizontalSpacing(10),
             Text(
