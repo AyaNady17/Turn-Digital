@@ -1,270 +1,304 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:turn_digital/Core/DI/dependency_injection.dart';
+import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
-import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
-
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
+import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart';
+import 'package:turn_digital/core/global/Helpers/functions.dart';
 
 class EventDetailsScreen extends StatelessWidget {
-  final Events event;
-
-  const EventDetailsScreen({Key? key, required this.event}) : super(key: key);
+  final int eventId;
+  const EventDetailsScreen({super.key, required this.eventId});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: _buildBuyTicketButton(),
-      body: Stack(
-        children: [
-          SizedBox(
-            height: 300.h,
-            width: double.infinity,
-            child: _buildEventImage(event.picture),
-          ),
-          SingleChildScrollView(
-            padding: EdgeInsets.only(top: 250.h),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.r),
-                  topRight: Radius.circular(24.r),
-                ),
-              ),
-              // Main content
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocProvider<HomeCubit>.value(
+      value: getIt.get<HomeCubit>()..getEventDetails(eventId),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final event = state.eventDetails;
+            if (state.eventDetailsRequestStatus == RequestStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return SingleChildScrollView(
+              child: Stack(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 16.h,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              ..._buildAttendeeAvatars([
-                                event.organizer.picture,
-                              ]),
-                              Text(
-                                '+${event.numberOfGoing} Going',
-                                style: AppTextStyles.font14GreyWeight400,
-                              ),
-                            ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      EventHeader(eventImage: event!.picture),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            verticalSpacing(40),
+                            Text(
+                              event.title,
+                              style: AppTextStyles.font15BlackWeight400
+                                  .copyWith(fontSize: 35),
+                            ),
+                            verticalSpacing(22),
+                            EventDetailsRow(
+                              icon: 'assets/images/calendar_icon.png',
+                              title: formatFullDate(event.date),
+                              subtitle: formatEventTime(event.date),
+                            ),
+                            verticalSpacing(22),
+                            EventDetailsRow(
+                              icon: 'assets/images/location_icon.png',
+                              title: event.addressTitle,
+                              subtitle: event.address,
+                            ),
+                            verticalSpacing(22),
+
+                            EventDetailsRow(
+                              url: event.organizer.picture,
+
+                              title: event.organizer.name,
+                              subtitle: 'Organizer',
+                              textOfButton: 'Follow',
+                            ),
+                            verticalSpacing(22),
+                            AboutEvent(aboutEvent: event.aboutEvent),
+                          ],
+                        ),
+                      ),
+                      verticalSpacing(22),
+                      BuyTicketButton(eventPrice: event.eventPrice),
+                    ],
+                  ),
+                  Positioned(
+                    top: 235.h,
+                    left: 45.w,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 13,
+                        horizontal: 16,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 20,
                           ),
-                        ),
-
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Invite'),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Text(
-                      event.title,
-                      style: AppTextStyles.font16WhiteWeight400,
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      children: [
-                        _buildDetailRow(
-                          icon: Icons.calendar_today_outlined,
-                          title: event.date,
-                          subtitle: event.date,
-                        ),
-                        SizedBox(height: 16.h),
-                        _buildDetailRow(
-                          icon: Icons.location_on_outlined,
-                          title: event.address,
-                          subtitle: event.address,
-                        ),
-                        SizedBox(height: 16.h),
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: InkWell(
-                      onTap: () {},
+                        ],
+                      ),
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircleAvatar(
-                            radius: 20.r,
-                            backgroundImage: NetworkImage(
-                              event.organizer.picture,
+                          Image.asset(
+                            "assets/images/going_users.png",
+                            width: 80,
+                            height: 35,
+                          ),
+                          horizontalSpacing(5),
+                          Text(
+                            '+${event.numberOfGoing} Going',
+                            style: AppTextStyles.font15BlackWeight400.copyWith(
+                              color: AppColorsManager.appPrimaryColor,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(width: 12.w),
-                          Expanded(
+                          horizontalSpacing(40),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 6,
+                            ),
+                            //  margin: const EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                              color: AppColorsManager.appPrimaryColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             child: Text(
-                              event.organizer.name,
-                              style: AppTextStyles.font18BlackWeight500,
+                              'Invite',
+                              style: AppTextStyles.font12WhiteWeight400,
                             ),
-                          ),
-                          OutlinedButton(
-                            onPressed: () {},
-                            child: const Text('Follow'),
                           ),
                         ],
                       ),
                     ),
                   ),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 16.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'About Event',
-                          //     style: AppTextStyles.font14DarkLight,
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'ddmg gmg mh bmh mhn ',
-                          //     style: AppTextStyles.font14DarkLight,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  SizedBox(height: 80.h),
                 ],
               ),
-            ),
-          ),
-
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Bounce(
-                    //   onTap: () => Navigator.pop(context),
-                    //   child: SvgPicture.asset(
-                    //     AssetsPATH.iArrowLeft,
-                    //     fit: BoxFit.scaleDown,
-                    //     width: 24.w,
-                    //     height: 24.h,
-                    //     color: Colors.white,
-                    //   ),
-                    // ),
-                    // Title
-                    Text(
-                      'Event Details',
-                      style: AppTextStyles.font24BlackWeight600.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                    // SvgPicture.asset(
-                    //   AssetsPATH.iMenuDots,
-                    //   fit: BoxFit.scaleDown,
-                    //   width: 24.w,
-                    //   height: 24.h,
-                    //   color: Colors.white,
-                    // ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBuyTicketButton() {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(16.w),
-      child: SizedBox(
-        width: double.infinity,
-        height: 50.h,
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text(
-            'Buy Ticket \$120',
-            style: AppTextStyles.font15BlackWeight400,
-          ),
+            );
+          },
         ),
       ),
     );
   }
+}
 
-  Widget _buildEventImage(String? imageUrl) {
-    if (imageUrl == null || imageUrl.isEmpty) {
-      return Container(
-        color: Colors.grey[300],
-        alignment: Alignment.center,
-        child: const Text('No Image'),
-      );
-    }
-    return Image.network(imageUrl, fit: BoxFit.cover);
-  }
-
-  Widget _buildDetailRow({
-    required IconData icon,
-    required String title,
-    String? subtitle,
-  }) {
-    return Row(
+class EventHeader extends StatelessWidget {
+  const EventHeader({super.key, required this.eventImage});
+  final String eventImage;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
       children: [
-        Icon(icon, color: AppColorsManager.appPrimaryColor),
-        SizedBox(width: 12.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        Image.network(
+          "https://flashbackfestival.bassevents.be/img/3/55154-24541-10-ae5662532840352e.jpg",
+          width: double.infinity,
+          height: 250,
+          fit: BoxFit.cover,
+        ),
+        Positioned(
+          top: 20.h,
+          left: 16.w,
+          child: Row(
             children: [
-              Text(
-                title,
-                //style: AppTextStyles.font14DarkLight
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.pop(context),
               ),
-              if (subtitle != null && subtitle.isNotEmpty)
-                Padding(
-                  padding: EdgeInsets.only(top: 4.h),
-                  child: Text(
-                    subtitle,
-                    // style: AppTextStyles.font14DarkLight
-                  ),
+              Text(
+                'Event Details',
+                style: AppTextStyles.font18BlackWeight500.copyWith(
+                  color: Colors.white,
                 ),
+              ),
             ],
           ),
         ),
       ],
     );
   }
+}
 
-  List<Widget> _buildAttendeeAvatars(List<String>? attendees) {
-    if (attendees == null || attendees.isEmpty) return [];
-    return attendees.take(3).map((url) {
-      return Padding(
-        padding: EdgeInsets.only(right: 4.w),
-        child: CircleAvatar(radius: 12.r, backgroundImage: NetworkImage(url)),
-      );
-    }).toList();
+class EventDetailsRow extends StatelessWidget {
+  const EventDetailsRow({
+    super.key,
+    this.onPressed,
+    this.textOfButton,
+    this.icon,
+    this.url,
+    required this.title,
+    required this.subtitle,
+  });
+  final String? icon;
+  final String? url;
+  final String title;
+  final String subtitle;
+  final String? textOfButton;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Row(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(9),
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: AppColorsManager.appPrimaryColor.withOpacity(.1),
+            ),
+            child:
+                (icon != null)
+                    ? Image.asset(
+                      icon!,
+                      height: 50,
+                      width: 50,
+                      color: AppColorsManager.appPrimaryColor,
+                    )
+                    : ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        url!,
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+          ),
+          horizontalSpacing(15),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: AppTextStyles.font16GreyWeight500.copyWith(
+                  color: AppColorsManager.textColor,
+                ),
+              ),
+              Text(subtitle, style: AppTextStyles.font14GreyWeight400),
+            ],
+          ),
+          const Spacer(),
+          if (textOfButton != null)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColorsManager.appPrimaryColor.withOpacity(.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                textOfButton!,
+                style: AppTextStyles.font12WhiteWeight400.copyWith(
+                  color: AppColorsManager.appPrimaryColor,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class AboutEvent extends StatelessWidget {
+  const AboutEvent({super.key, required this.aboutEvent});
+  final String aboutEvent;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('About Event', style: AppTextStyles.font18BlackWeight500),
+        verticalSpacing(16),
+        Text(aboutEvent, style: AppTextStyles.font15BlackWeight400),
+      ],
+    );
+  }
+}
+
+class BuyTicketButton extends StatelessWidget {
+  const BuyTicketButton({super.key, required this.eventPrice});
+  final String eventPrice;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColorsManager.appPrimaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          shadowColor: Colors.grey.withOpacity(0.5),
+          elevation: 5,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+        child: Center(
+          child: Text(
+            'BUY TICKET \$$eventPrice',
+            style: AppTextStyles.font16WhiteWeight400,
+          ),
+        ),
+      ),
+    );
   }
 }

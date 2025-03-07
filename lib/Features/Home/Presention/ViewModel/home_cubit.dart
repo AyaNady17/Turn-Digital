@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
-import 'package:turn_digital/Features/Home/Data/home_repo.dart';
+import 'package:turn_digital/Features/Home/Data/Repository/home_repo.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -43,6 +43,29 @@ class HomeCubit extends Cubit<HomeState> {
             requestStatus: RequestStatus.failure,
             responseMessage: error.message,
             isLoadingMore: false,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getEventDetails(int eventId) async {
+    emit(state.copyWith(eventDetailsRequestStatus: RequestStatus.loading));
+    final response = await _homeRepo.getEventDetails(eventId: eventId);
+    response.when(
+      success: (response) {
+        emit(
+          state.copyWith(
+            eventDetailsRequestStatus: RequestStatus.success,
+            eventDetails: response.eventDetailsModel,
+          ),
+        );
+      },
+      failure: (error) {
+        emit(
+          state.copyWith(
+            eventDetailsRequestStatus: RequestStatus.failure,
+            responseMessage: error.message,
           ),
         );
       },

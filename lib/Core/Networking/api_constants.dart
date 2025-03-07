@@ -6,4 +6,5 @@ class ApiConstants {
   static const baseUrl = "http://api.td-dev.turndigital.net/api";
   static const signUpEndPoint = "/users/register";
   static const getEventsEndpoint = '/events';
+  static const getEventDetailsEndPoint = '/events/{eventId}';
 }

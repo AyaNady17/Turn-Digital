@@ -69,7 +69,7 @@ class EventCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColorsManager.appPrimaryColor,
+                          color: Color(0xffEB5757),
                         ),
                       ),
                       Text(
@@ -77,7 +77,7 @@ class EventCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w400,
-                          color: AppColorsManager.appPrimaryColor,
+                          color: Color(0xffEB5757),
                         ),
                       ),
                     ],
@@ -95,7 +95,7 @@ class EventCard extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.bookmark,
-                    color: AppColorsManager.appPrimaryColor,
+                    color: Color(0xffEB5757),
                     size: 20.w,
                   ),
                 ),
@@ -208,7 +208,7 @@ class _EventListViewState extends State<EventListView> {
                         MaterialPageRoute(
                           builder:
                               (context) => EventDetailsScreen(
-                                event: state.eventsList[index],
+                                eventId: state.eventsList[index].eventId,
                               ),
                         ),
                       ),

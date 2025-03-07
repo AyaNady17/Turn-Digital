@@ -35,6 +35,26 @@ class _HomeServices implements HomeServices {
     return value;
   }
 
+  @override
+  Future<GetEventDetailsResponseModel> getEventDetails(int eventId) async {
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+      _setStreamType<GetEventDetailsResponseModel>(
+        Options(method: 'GET', headers: <String, dynamic>{})
+            .compose(
+              _dio.options,
+              ApiConstants.getEventDetailsEndPoint.replaceFirst(
+                '{eventId}',
+                eventId.toString(),
+              ),
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl),
+      ),
+    );
+
+    final value = GetEventDetailsResponseModel.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

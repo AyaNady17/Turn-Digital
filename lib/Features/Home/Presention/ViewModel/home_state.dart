@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
+import 'package:turn_digital/Features/Home/Data/Models/get_event_details_response_model.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
 
 class HomeState extends Equatable {
@@ -9,6 +10,8 @@ class HomeState extends Equatable {
   final int currentPage;
   final bool hasMore;
   final bool isLoadingMore;
+  final EventDetailsModel? eventDetails;
+  final RequestStatus eventDetailsRequestStatus;
 
   const HomeState({
     required this.eventsList,
@@ -17,6 +20,8 @@ class HomeState extends Equatable {
     this.currentPage = 1,
     this.hasMore = false,
     this.isLoadingMore = false,
+    this.eventDetails = null,
+    this.eventDetailsRequestStatus = RequestStatus.initial,
   });
 
   factory HomeState.initial() {
@@ -27,6 +32,8 @@ class HomeState extends Equatable {
       currentPage: 1,
       hasMore: false,
       isLoadingMore: false,
+      eventDetails: null,
+      eventDetailsRequestStatus: RequestStatus.initial,
     );
   }
 
@@ -37,6 +44,8 @@ class HomeState extends Equatable {
     int? currentPage,
     bool? isLoadingMore,
     bool? hasMore,
+    EventDetailsModel? eventDetails,
+    RequestStatus? eventDetailsRequestStatus,
   }) {
     return HomeState(
       eventsList: eventsList ?? this.eventsList,
@@ -45,6 +54,9 @@ class HomeState extends Equatable {
       currentPage: currentPage ?? this.currentPage,
       hasMore: hasMore ?? this.hasMore,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      eventDetails: eventDetails ?? this.eventDetails,
+      eventDetailsRequestStatus:
+          eventDetailsRequestStatus ?? this.eventDetailsRequestStatus,
     );
   }
 
@@ -56,5 +68,7 @@ class HomeState extends Equatable {
     currentPage,
     hasMore,
     isLoadingMore,
+    eventDetails,
+    eventDetailsRequestStatus,
   ];
 }
