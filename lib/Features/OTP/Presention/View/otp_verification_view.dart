@@ -70,7 +70,7 @@ class OTPVerificationScreen extends StatelessWidget {
                     showSuccess('OTP Verified Successfully');
                     Navigator.pushNamedAndRemoveUntil(
                       context,
-                      AppRoutes.rHome,
+                      AppRoutes.rNavBar,
                       (route) => false,
                     );
                   } else {

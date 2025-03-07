@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Routing/routes.dart';
 import 'package:turn_digital/Features/Home/Presention/View/explore_view.dart';
+import 'package:turn_digital/Features/Home/Presention/View/notched_bottom_nav_bar.dart';
 import 'package:turn_digital/Features/Home/Presention/View/see_all_events_view.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
 import 'package:turn_digital/Features/Login/login_view.dart';
@@ -36,6 +37,9 @@ class AppRouter {
                 child: SeeAllEventsView(),
               ),
         );
+
+      case AppRoutes.rNavBar:
+        return MaterialPageRoute(builder: (_) => NotchedBottomAppBar());
 
       default:
         return MaterialPageRoute(builder: (_) => NotFoundView());

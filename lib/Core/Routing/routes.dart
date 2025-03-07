@@ -6,4 +6,5 @@ class AppRoutes {
   static const rOtp = "/otp";
   static const rHome = "/home";
   static const rSeeAllEvents = "/seeAllEvents";
+  static const rNavBar = "/navBar";
 }
