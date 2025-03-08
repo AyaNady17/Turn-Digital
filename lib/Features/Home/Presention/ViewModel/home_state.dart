@@ -16,6 +16,7 @@ class HomeState extends Equatable {
   final EventDetailsModel? eventDetails;
   final RequestStatus eventDetailsRequestStatus;
   final OrganizerDetailsModel? organizerModel;
+  final bool isAlertSet;
 
   const HomeState({
     required this.eventsList,
@@ -28,6 +29,7 @@ class HomeState extends Equatable {
     this.eventDetails = null,
     this.eventDetailsRequestStatus = RequestStatus.initial,
     this.organizerModel,
+    this.isAlertSet = false,
   });
 
   factory HomeState.initial() {
@@ -56,6 +58,7 @@ class HomeState extends Equatable {
     RequestStatus? eventDetailsRequestStatus,
     RequestStatus? requestStatusOrganizer,
     OrganizerDetailsModel? organizerModel,
+    bool? isAlertSet,
   }) {
     return HomeState(
       eventsList: eventsList ?? this.eventsList,
@@ -70,6 +73,7 @@ class HomeState extends Equatable {
       requestStatusOrganizer:
           requestStatusOrganizer ?? this.requestStatusOrganizer,
       organizerModel: organizerModel ?? this.organizerModel,
+      isAlertSet: isAlertSet ?? this.isAlertSet,
     );
   }
 
@@ -85,5 +89,6 @@ class HomeState extends Equatable {
     eventDetailsRequestStatus,
     requestStatusOrganizer,
     organizerModel,
+    isAlertSet,
   ];
 }

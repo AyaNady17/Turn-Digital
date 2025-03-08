@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:turn_digital/Core/Notifications/local_notificatons_services.dart';
 import 'package:turn_digital/Features/Home/Data/Repository/home_repo.dart';
 import 'package:turn_digital/Features/Home/Data/Services/home_services.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
@@ -17,7 +18,9 @@ Future<void> setUpDependencyInjection() async {
 
 void setupAppCubits() {
   getIt.registerFactory<SignUpCubit>(() => SignUpCubit(getIt<SignUpRepo>()));
-  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+  getIt.registerFactory<HomeCubit>(
+    () => HomeCubit(getIt<HomeRepo>(), getIt<NotificationService>()),
+  );
 }
 
 void setupAppRepos() {
@@ -31,4 +34,5 @@ void setupAppServices() {
   Dio dio = DioServices.getDio();
   getIt.registerLazySingleton<RegisterServices>(() => RegisterServices(dio));
   getIt.registerLazySingleton<HomeServices>(() => HomeServices(dio));
+  getIt.registerLazySingleton<NotificationService>(() => NotificationService());
 }

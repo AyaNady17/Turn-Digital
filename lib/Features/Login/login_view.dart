@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() {
     if (_formKey.currentState?.validate() ?? false) {
-      Navigator.pushNamed(context, AppRoutes.rHome);
+      Navigator.pushNamed(context, AppRoutes.rNavBar);
     }
   }
 

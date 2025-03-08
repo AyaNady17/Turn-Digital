@@ -1,13 +1,19 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
+import 'package:turn_digital/Core/Notifications/local_notificatons_services.dart';
+import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
 import 'package:turn_digital/Features/Home/Data/Repository/home_repo.dart';
-import 'package:turn_digital/Features/Home/Presention/View/organizer_screen.dart';
+import 'package:turn_digital/Features/Home/Presention/View/Widgets/event_card.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._homeRepo) : super(HomeState.initial());
-
   final HomeRepo _homeRepo;
+  final NotificationService _notificationService;
+  HomeCubit(this._homeRepo, this._notificationService)
+    : super(HomeState.initial());
 
   Future<void> getEvents({
     int page = 1,
@@ -70,6 +76,32 @@ class HomeCubit extends Cubit<HomeState> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> setEventAlert({required Events event}) async {
+    emit(state.copyWith(isAlertSet: true));
+    await _notificationService.scheduleNotification(
+      title: event.title,
+      body: event.address,
+      eventDateTime: DateTime.parse(event.date),
+      id: event.eventId,
+    );
+  }
+
+  Future<void> shareEvent(dynamic event) async {
+    final tempDir = await getTemporaryDirectory();
+    final filePath = "${tempDir.path}/${event.title}.jpg";
+
+    await Dio().download(event.picture, filePath);
+
+    final String shareText =
+        "${event.title}\n📍 Location: ${event.address}\n🗓 Date: ${extractDateParts(event.date)['month']} ${extractDateParts(event.date)['date']}\n\nCheck out this event!";
+
+    await Share.shareXFiles(
+      [XFile(filePath)],
+      text: shareText,
+      subject: event.title,
     );
   }
 

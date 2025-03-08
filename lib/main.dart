@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
+import 'package:turn_digital/Core/Notifications/local_notificatons_services.dart';
 import 'package:turn_digital/Core/Routing/routes.dart';
-import 'package:turn_digital/Features/Home/Presention/View/explore_view.dart';
-import 'package:turn_digital/Features/Home/Presention/View/notched_bottom_nav_bar.dart';
-import 'package:turn_digital/Features/Home/Presention/View/organizer_screen.dart';
-import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
 import 'package:turn_digital/core/routing/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpDependencyInjection();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+  await NotificationService().initNotifications();
 
   runApp(const TurnDigital());
 }
