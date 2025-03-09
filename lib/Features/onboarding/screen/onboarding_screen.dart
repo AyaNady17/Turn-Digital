@@ -36,9 +36,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   padding: const EdgeInsets.only(top: 50),
                   child: Column(
                     children: [
-                      Image.asset(
-                        '${onboardingPages[index].image}',
-                        fit: BoxFit.fill,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: Image.asset(
+                          '${onboardingPages[index].image}',
+                          fit: BoxFit.fill,
+                        ),
                       ),
                       Expanded(
                         child: Container(
@@ -55,13 +58,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             children: [
                               Text(
                                 '${onboardingPages[index].title}',
-                                style: AppTextStyles.font16WhiteWeight400,
+                                style: AppTextStyles.font18BlackWeight500
+                                    .copyWith(color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),
                               verticalSpacing(20),
                               Text(
                                 '${onboardingPages[index].subtitle}',
-                                style: AppTextStyles.font12WhiteWeight400,
+                                style: AppTextStyles.font14GreyWeight400
+                                    .copyWith(color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),
                               const Spacer(),
@@ -83,7 +88,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     },
                                     child: Text(
                                       'Skip',
-                                      style: AppTextStyles.font12WhiteWeight400,
+                                      style: AppTextStyles.font16GreyWeight500
+                                          .copyWith(
+                                            color: Colors.white.withOpacity(
+                                              0.6,
+                                            ),
+                                          ),
                                     ),
                                   ),
                                   SmoothPageIndicator(
@@ -120,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     },
                                     child: Text(
                                       'Next',
-                                      style: AppTextStyles.font12WhiteWeight400,
+                                      style: AppTextStyles.font16WhiteWeight400,
                                     ),
                                   ),
                                 ],
