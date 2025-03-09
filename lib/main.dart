@@ -10,7 +10,6 @@ import 'package:turn_digital/core/routing/app_router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUpDependencyInjection();
-  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   await NotificationService().initNotifications();
   await HiveService.initHive();
 

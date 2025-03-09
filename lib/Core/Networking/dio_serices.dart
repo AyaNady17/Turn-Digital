@@ -27,7 +27,7 @@ class DioServices {
       dio!
         ..options.connectTimeout = timeOut
         ..options.receiveTimeout = timeOut;
-      addDioHeaders(); //TODO: check it later
+      addDioHeaders();
       addDioInterceptor();
       return dio!;
     } else {
