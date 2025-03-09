@@ -10,6 +10,7 @@ import 'package:turn_digital/Features/Login/login_view.dart';
 import 'package:turn_digital/Features/OTP/Presention/View/otp_verification_view.dart';
 import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
 import 'package:turn_digital/Features/Splash/splash.dart';
+import 'package:turn_digital/Features/onboarding/screen/onboarding_screen.dart';
 
 class AppRouter {
   static Route generateRoute(RouteSettings setting) {
@@ -17,7 +18,7 @@ class AppRouter {
       case AppRoutes.rSplash:
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case AppRoutes.rOnBoarding:
-        return MaterialPageRoute(builder: (_) => Container());
+        return MaterialPageRoute(builder: (_) => OnboardingScreen());
       case AppRoutes.rLogin:
         return MaterialPageRoute(builder: (_) => LoginScreen());
 

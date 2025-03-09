@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
+import 'package:turn_digital/Core/Database/shared_prefrences_services.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_toasts.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
@@ -67,6 +68,10 @@ class OTPVerificationScreen extends StatelessWidget {
                 text: "CONTINUE",
                 onTap: () {
                   if (controller.text == '0000') {
+                    SharedPreferencesService.setBool(
+                      SharedPreferencesService.isUserLoggedInKey,
+                      true,
+                    );
                     showSuccess('OTP Verified Successfully');
                     Navigator.pushNamedAndRemoveUntil(
                       context,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:turn_digital/Core/Database/cach_helper.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:turn_digital/Core/Database/shared_prefrences_services.dart';
 import 'package:turn_digital/Core/Routing/routes.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,14 +15,22 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () async {
-      bool isOnboardingShow = await CacheHelper.getBool('onboarding');
-      bool isLogin = await CacheHelper.getBool('login');
-      if (isOnboardingShow) {
-        // navigateReplacement(context, const OnboardingScreen());
-      } else if (!isLogin) {
+      bool isOnboardingVisited =
+          SharedPreferencesService.getBool(
+            SharedPreferencesService.isOnboardingVistiedKey,
+          ) ??
+          false;
+      bool isUserLoggedIn =
+          SharedPreferencesService.getBool(
+            SharedPreferencesService.isUserLoggedInKey,
+          ) ??
+          false;
+      if (!isOnboardingVisited) {
+        Navigator.pushReplacementNamed(context, AppRoutes.rOnBoarding);
+      } else if (!isUserLoggedIn) {
         Navigator.pushReplacementNamed(context, AppRoutes.rSignUp);
       } else {
-        Navigator.pushReplacementNamed(context, AppRoutes.rHome);
+        Navigator.pushReplacementNamed(context, AppRoutes.rOnBoarding);
       }
     });
   }
