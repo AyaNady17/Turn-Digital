@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Database/shared_prefrences_services.dart';
-import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_toasts.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/SharedWidgets/custom_app_button.dart';

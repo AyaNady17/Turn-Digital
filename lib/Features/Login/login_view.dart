@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:turn_digital/Core/Database/shared_prefrences_services.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/SharedWidgets/custom_app_button.dart';
@@ -8,31 +7,20 @@ import 'package:turn_digital/Core/Global/SharedWidgets/custom_text_field.dart';
 import 'package:turn_digital/Core/Global/app_strings.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
-import 'package:turn_digital/Features/SignUp/Presention/View/sign_up_view.dart';
-
+import 'package:turn_digital/Features/SignUp/Presention/View/Widgets/social_login_button_widget.dart';
 import '../../../core/routing/routes.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  void _login() {
-    if (_formKey.currentState?.validate() ?? false) {
-      Navigator.pushNamed(context, AppRoutes.rNavBar);
-      SharedPreferencesService.setBool(
-        SharedPreferencesService.isUserLoggedInKey,
-        true,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Text(
                             'Remember Me',
-                            style: AppTextStyles.font12WhiteWeight400,
+                            style: AppTextStyles.font12WhiteWeight400.copyWith(
+                              color: AppColorsManager.textColor,
+                            ),
                           ),
                         ],
                       ),
@@ -114,7 +104,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   verticalSpacing(20),
-                  CustomAppButton(text: 'Login', onTap: _login),
+                  CustomAppButton(
+                    text: 'Login',
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.rNavBar);
+                      SharedPreferencesService.setBool(
+                        SharedPreferencesService.isUserLoggedInKey,
+                        true,
+                      );
+                    },
+                  ),
                   verticalSpacing(20),
                   Text(
                     'OR',
@@ -124,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   verticalSpacing(20),
                   SocialLoginButton(
                     text: AppStrings.tLoginFacebook,
-                    icon: 'assets/images/google.png',
+                    icon: 'assets/images/facebook.png',
                     onTap: () {},
                   ),
                   verticalSpacing(10),

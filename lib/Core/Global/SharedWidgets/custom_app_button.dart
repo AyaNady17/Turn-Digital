@@ -27,7 +27,7 @@ class CustomAppButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Color(0x6F7EC9).withOpacity(0.25),
+            color: Color(0xff6F7EC9).withOpacity(0.25),
             offset: Offset(0, 10),
             blurRadius: 35,
             spreadRadius: 0,

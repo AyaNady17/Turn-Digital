@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive/hive.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Database/hive_services.dart';
 import 'package:turn_digital/Core/Notifications/local_notificatons_services.dart';

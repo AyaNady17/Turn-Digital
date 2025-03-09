@@ -53,7 +53,7 @@ class OrganizerReviewList extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              organizerModel.reviews[index].reviewerName ?? '',
+                              organizerModel.reviews[index].reviewerName,
                               style: AppTextStyles.font18BlackWeight500
                                   .copyWith(fontWeight: FontWeight.w400),
                             ),
@@ -68,8 +68,7 @@ class OrganizerReviewList extends StatelessWidget {
                         verticalSpacing(5),
                         RatingBar.builder(
                           initialRating:
-                              (organizerModel.reviews[index].rate ?? 0)
-                                  .toDouble(),
+                              (organizerModel.reviews[index].rate).toDouble(),
                           direction: Axis.horizontal,
                           minRating: 1,
                           allowHalfRating: true,

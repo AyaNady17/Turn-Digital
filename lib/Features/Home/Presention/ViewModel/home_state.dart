@@ -4,7 +4,6 @@ import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_event_details_response_model.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_organizer_details_reponse_model.dart';
-import 'package:turn_digital/Features/Home/Presention/View/organizer_screen.dart';
 
 class HomeState extends Equatable {
   final List<Events> eventsList;
@@ -28,7 +27,7 @@ class HomeState extends Equatable {
     this.currentPage = 1,
     this.hasMore = false,
     this.isLoadingMore = false,
-    this.eventDetails = null,
+    this.eventDetails,
     this.eventDetailsRequestStatus = RequestStatus.initial,
     this.organizerModel,
     this.isAlertSet = false,

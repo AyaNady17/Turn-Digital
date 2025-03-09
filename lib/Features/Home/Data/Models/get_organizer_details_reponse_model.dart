@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
 
 part 'get_organizer_details_reponse_model.g.dart';
 

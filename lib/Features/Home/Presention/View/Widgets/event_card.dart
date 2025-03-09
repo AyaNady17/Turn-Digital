@@ -37,7 +37,7 @@ class EventCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(18.r),
           boxShadow: [
             BoxShadow(
-              color: const Color(0x505588).withOpacity(0.06),
+              color: const Color(0xff505588).withOpacity(0.06),
               offset: const Offset(0, 8),
               blurRadius: 30,
               spreadRadius: 0,
@@ -233,10 +233,10 @@ class EventListView extends StatefulWidget {
   const EventListView({super.key});
 
   @override
-  _EventListViewState createState() => _EventListViewState();
+  EventListViewState createState() => EventListViewState();
 }
 
-class _EventListViewState extends State<EventListView> {
+class EventListViewState extends State<EventListView> {
   final ScrollController _scrollController = ScrollController();
 
   @override

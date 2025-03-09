@@ -68,9 +68,7 @@ class SeeAllEventsViewAppBar extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.more_vert, color: Colors.black),
-              onPressed: () {
-                // TODO: Implement more options functionality
-              },
+              onPressed: () {},
             ),
           ],
         ),
@@ -159,6 +157,8 @@ class SavedEventsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen:
+          (previous, current) => previous.savedEvents != current.savedEvents,
       builder: (context, state) {
         return ListView.builder(
           itemCount: state.savedEvents.length,
@@ -208,7 +208,7 @@ class HorizontalEventCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: const Color(0x575C8A).withOpacity(0.06),
+            color: const Color(0xff575C8A).withOpacity(0.06),
             offset: const Offset(0, 10),
             blurRadius: 35,
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:turn_digital/Core/Database/shared_prefrences_services.dart';
 import 'package:turn_digital/Core/Routing/routes.dart';
 

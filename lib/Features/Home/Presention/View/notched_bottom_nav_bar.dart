@@ -13,10 +13,10 @@ class NotchedBottomAppBar extends StatefulWidget {
   const NotchedBottomAppBar({super.key});
 
   @override
-  _NotchedBottomAppBarState createState() => _NotchedBottomAppBarState();
+  NotchedBottomAppBarState createState() => NotchedBottomAppBarState();
 }
 
-class _NotchedBottomAppBarState extends State<NotchedBottomAppBar> {
+class NotchedBottomAppBarState extends State<NotchedBottomAppBar> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {

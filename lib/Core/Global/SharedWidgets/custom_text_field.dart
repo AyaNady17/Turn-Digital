@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:turn_digital/Core/Global/Helpers/extensions.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
@@ -21,10 +19,10 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
+  CustomTextFieldState createState() => CustomTextFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class CustomTextFieldState extends State<CustomTextField> {
   bool _obscureText = true;
 
   @override

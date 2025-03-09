@@ -8,6 +8,7 @@ import 'package:turn_digital/Core/Global/SharedWidgets/custom_app_button.dart';
 import 'package:turn_digital/Core/Global/SharedWidgets/custom_text_field.dart';
 import 'package:turn_digital/Core/Global/app_strings.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
+import 'package:turn_digital/Features/SignUp/Presention/View/Widgets/social_login_button_widget.dart';
 import 'package:turn_digital/Features/SignUp/Presention/ViewModal/sign_up_cubit.dart';
 import 'package:turn_digital/core/Global/theming/color_manager.dart';
 import 'package:turn_digital/core/global/Helpers/functions.dart';
@@ -38,7 +39,6 @@ class SignUpView extends StatelessWidget {
               child: BlocBuilder<SignUpCubit, SignUpState>(
                 builder: (context, state) {
                   final cubit = context.read<SignUpCubit>();
-
                   return Form(
                     key: cubit.formKey,
                     child: Column(
@@ -158,7 +158,7 @@ class SignUpView extends StatelessWidget {
                         verticalSpacing(10),
                         SocialLoginButton(
                           text: AppStrings.tLoginFacebook,
-                          icon: "assets/images/google.png",
+                          icon: "assets/images/facebook.png",
                           onTap: () {},
                         ),
                         verticalSpacing(20),
@@ -193,56 +193,6 @@ class SignUpView extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class SocialLoginButton extends StatelessWidget {
-  final String text;
-  final String icon;
-  final VoidCallback onTap;
-
-  const SocialLoginButton({
-    super.key,
-    required this.text,
-    required this.icon,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 273.w,
-        height: 56.h,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFD3D4E2).withOpacity(0.25),
-              offset: const Offset(15, 0),
-              blurRadius: 30,
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(icon, height: 24.h),
-            horizontalSpacing(10),
-            Text(
-              text,
-              style: AppTextStyles.font16WhiteWeight400.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
         ),
       ),
     );
