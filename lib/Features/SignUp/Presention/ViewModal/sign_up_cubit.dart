@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Features/SignUp/Data/Models/register_request_body_model.dart';
-import 'package:turn_digital/Features/SignUp/Data/register_repo.dart';
+import 'package:turn_digital/Features/SignUp/Data/Repository/register_repo.dart';
 
 part 'sign_up_state.dart';
 

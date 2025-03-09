@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:turn_digital/Core/Database/shared_prefrences_services.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/SharedWidgets/custom_app_button.dart';
 import 'package:turn_digital/Core/Global/SharedWidgets/custom_text_field.dart';
@@ -25,6 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() {
     if (_formKey.currentState?.validate() ?? false) {
       Navigator.pushNamed(context, AppRoutes.rNavBar);
+      SharedPreferencesService.setBool(
+        SharedPreferencesService.isUserLoggedInKey,
+        true,
+      );
     }
   }
 

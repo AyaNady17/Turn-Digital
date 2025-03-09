@@ -2,7 +2,7 @@ import 'package:turn_digital/Core/Networking/api_error_handler.dart';
 import 'package:turn_digital/Core/Networking/api_result.dart';
 import 'package:turn_digital/Features/SignUp/Data/Models/register_request_body_model.dart';
 import 'package:turn_digital/Features/SignUp/Data/Models/register_response_model.dart';
-import 'package:turn_digital/Features/SignUp/Data/register_services.dart';
+import 'package:turn_digital/Features/SignUp/Data/Services/register_services.dart';
 
 class SignUpRepo {
   final RegisterServices _registerServices;

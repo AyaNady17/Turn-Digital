@@ -4,8 +4,8 @@ import 'package:turn_digital/Core/Notifications/local_notificatons_services.dart
 import 'package:turn_digital/Features/Home/Data/Repository/home_repo.dart';
 import 'package:turn_digital/Features/Home/Data/Services/home_services.dart';
 import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
-import 'package:turn_digital/Features/SignUp/Data/register_repo.dart';
-import 'package:turn_digital/Features/SignUp/Data/register_services.dart';
+import 'package:turn_digital/Features/SignUp/Data/Repository/register_repo.dart';
+import 'package:turn_digital/Features/SignUp/Data/Services/register_services.dart';
 import 'package:turn_digital/Features/SignUp/Presention/ViewModal/sign_up_cubit.dart';
 import '../networking/dio_serices.dart';
 
