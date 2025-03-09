@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:turn_digital/Core/Database/hive_services.dart';
+import 'package:turn_digital/Core/Database/Local%20Database%20Models/local_event_model.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Notifications/local_notificatons_services.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
@@ -13,7 +15,9 @@ class HomeCubit extends Cubit<HomeState> {
   final HomeRepo _homeRepo;
   final NotificationService _notificationService;
   HomeCubit(this._homeRepo, this._notificationService)
-    : super(HomeState.initial());
+    : super(HomeState.initial()) {
+    loadSavedEvents();
+  }
 
   Future<void> getEvents({
     int page = 1,
@@ -79,7 +83,12 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  Future<void> setEventAlert({required Events event}) async {
+  Future<void> toggleEventAlert({required Events event}) async {
+    if (state.isAlertSet) {
+      await _notificationService.cancelNotification(event.eventId);
+      emit(state.copyWith(isAlertSet: false));
+      return;
+    }
     emit(state.copyWith(isAlertSet: true));
     await _notificationService.scheduleNotification(
       title: event.title,
@@ -103,6 +112,25 @@ class HomeCubit extends Cubit<HomeState> {
       text: shareText,
       subject: event.title,
     );
+  }
+
+  Future<void> loadSavedEvents() async {
+    final savedEvents = await HiveService.getSavedLocalEvent();
+    emit(state.copyWith(savedEvents: savedEvents));
+  }
+
+  bool isEventSaved(int eventId) {
+    return state.savedEvents.any((e) => e.eventId == eventId);
+  }
+
+  Future<void> toggleSaveEvent({required LocalEvent event}) async {
+    if (isEventSaved(event.eventId)) {
+      await HiveService.removeEvent(event.eventId);
+    } else {
+      await HiveService.saveEvent(event);
+    }
+
+    loadSavedEvents();
   }
 
   Future<void> getOrganizerDetails(int organizerId) async {

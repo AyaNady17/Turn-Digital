@@ -10,7 +10,8 @@ import 'package:turn_digital/Features/Home/Presention/ViewModel/home_state.dart'
 import 'package:turn_digital/core/Global/theming/color_manager.dart';
 
 class SeeAllEventsView extends StatelessWidget {
-  const SeeAllEventsView({super.key});
+  const SeeAllEventsView({super.key, this.isSavedEventsPage = false});
+  final bool isSavedEventsPage;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,9 @@ class SeeAllEventsView extends StatelessWidget {
             children: [
               const SeeAllEventsViewAppBar(),
               verticalSpacing(16),
-              const SeeAllEventsListView(),
+              isSavedEventsPage
+                  ? const SavedEventsListView()
+                  : const SeeAllEventsListView(),
             ],
           ),
         ),
@@ -134,6 +137,36 @@ class _SeeAllEventsListViewState extends State<SeeAllEventsListView> {
             }
 
             final event = state.eventsList[index];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: HorizontalEventCard(
+                imageUrl: event.picture,
+                dateTime: formatEventDate(event.date),
+                title: event.title,
+                location: event.address,
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class SavedEventsListView extends StatelessWidget {
+  const SavedEventsListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        return ListView.builder(
+          itemCount: state.savedEvents.length,
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          itemBuilder: (context, index) {
+            final event = state.savedEvents[index];
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: HorizontalEventCard(

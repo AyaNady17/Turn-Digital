@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:turn_digital/Core/DI/dependency_injection.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
 import 'package:turn_digital/Core/Global/theming/app_text_styles.dart';
 import 'package:turn_digital/Core/Global/theming/color_manager.dart';
 import 'package:turn_digital/Features/Home/Presention/View/explore_view.dart';
+import 'package:turn_digital/Features/Home/Presention/View/see_all_events_view.dart';
+import 'package:turn_digital/Features/Home/Presention/ViewModel/home_cubit.dart';
 
 class NotchedBottomAppBar extends StatefulWidget {
   const NotchedBottomAppBar({super.key});
@@ -23,7 +27,10 @@ class _NotchedBottomAppBarState extends State<NotchedBottomAppBar> {
 
   final List<Widget> _pages = [
     ExploreView(),
-    Center(child: Text("Events Page")),
+    BlocProvider(
+      create: (context) => getIt<HomeCubit>(),
+      child: SeeAllEventsView(isSavedEventsPage: true),
+    ),
     Center(child: Text("Map Page")),
     Center(child: Text("Profile Page")),
   ];

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:turn_digital/Core/Database/Local%20Database%20Models/local_event_model.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_event_details_response_model.dart';
 import 'package:turn_digital/Features/Home/Data/Models/get_events_list_response_model.dart';
@@ -17,6 +18,7 @@ class HomeState extends Equatable {
   final RequestStatus eventDetailsRequestStatus;
   final OrganizerDetailsModel? organizerModel;
   final bool isAlertSet;
+  final List<LocalEvent> savedEvents;
 
   const HomeState({
     required this.eventsList,
@@ -30,6 +32,7 @@ class HomeState extends Equatable {
     this.eventDetailsRequestStatus = RequestStatus.initial,
     this.organizerModel,
     this.isAlertSet = false,
+    this.savedEvents = const [],
   });
 
   factory HomeState.initial() {
@@ -44,6 +47,8 @@ class HomeState extends Equatable {
       eventDetails: null,
       eventDetailsRequestStatus: RequestStatus.initial,
       organizerModel: null,
+      isAlertSet: false,
+      savedEvents: [],
     );
   }
 
@@ -59,6 +64,7 @@ class HomeState extends Equatable {
     RequestStatus? requestStatusOrganizer,
     OrganizerDetailsModel? organizerModel,
     bool? isAlertSet,
+    List<LocalEvent>? savedEvents,
   }) {
     return HomeState(
       eventsList: eventsList ?? this.eventsList,
@@ -74,6 +80,7 @@ class HomeState extends Equatable {
           requestStatusOrganizer ?? this.requestStatusOrganizer,
       organizerModel: organizerModel ?? this.organizerModel,
       isAlertSet: isAlertSet ?? this.isAlertSet,
+      savedEvents: savedEvents ?? this.savedEvents,
     );
   }
 
@@ -90,5 +97,6 @@ class HomeState extends Equatable {
     requestStatusOrganizer,
     organizerModel,
     isAlertSet,
+    savedEvents,
   ];
 }

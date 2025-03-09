@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:turn_digital/Core/DI/dependency_injection.dart';
+import 'package:turn_digital/Core/Database/Local%20Database%20Models/local_event_model.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_enums.dart';
 import 'package:turn_digital/Core/Global/Helpers/app_toasts.dart';
 import 'package:turn_digital/Core/Global/Helpers/functions.dart';
@@ -91,25 +92,7 @@ class EventCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 8.h,
-                  right: 8.w,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 6.w,
-                      vertical: 6.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Icon(
-                      Icons.bookmark,
-                      color: Color(0xffEB5757),
-                      size: 20.w,
-                    ),
-                  ),
-                ),
+                BookmarkComponent(event: event),
               ],
             ),
             SizedBox(height: 8.h),
@@ -136,23 +119,7 @@ class EventCard extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                BlocBuilder<HomeCubit, HomeState>(
-                  builder: (context, state) {
-                    return InkWell(
-                      onTap: () {
-                        getIt<HomeCubit>().setEventAlert(event: event);
-                        showSuccess('Event added to alerts');
-                      },
-                      child: Icon(
-                        !state.isAlertSet
-                            ? Icons.add_alert_outlined
-                            : Icons.add_alert_rounded,
-                        color: AppColorsManager.appPrimaryColor,
-                        size: 20.w,
-                      ),
-                    );
-                  },
-                ),
+                SetAlarmComponent(event: event),
               ],
             ),
             verticalSpacing(8),
@@ -172,6 +139,91 @@ class EventCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SetAlarmComponent extends StatelessWidget {
+  const SetAlarmComponent({super.key, required this.event});
+
+  final Events event;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen:
+          (previous, current) => previous.isAlertSet != current.isAlertSet,
+      builder: (context, state) {
+        return InkWell(
+          onTap: () {
+            BlocProvider.of<HomeCubit>(context).toggleEventAlert(event: event);
+            showSuccess(
+              !state.isAlertSet
+                  ? 'Event added to alerts'
+                  : 'Event removed from alerts',
+            );
+          },
+          child: Icon(
+            state.isAlertSet
+                ? Icons.add_alert_rounded
+                : Icons.add_alert_outlined,
+            color: AppColorsManager.appPrimaryColor,
+            size: 20.w,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class BookmarkComponent extends StatelessWidget {
+  const BookmarkComponent({super.key, required this.event});
+
+  final Events event;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 8.h,
+      right: 8.w,
+      child: BlocBuilder<HomeCubit, HomeState>(
+        buildWhen:
+            (previous, current) => previous.savedEvents != current.savedEvents,
+        builder: (context, state) {
+          final isSaved = BlocProvider.of<HomeCubit>(
+            context,
+          ).isEventSaved(event.eventId);
+          return GestureDetector(
+            onTap: () async {
+              await BlocProvider.of<HomeCubit>(context).toggleSaveEvent(
+                event: LocalEvent(
+                  eventId: event.eventId,
+                  picture: event.picture,
+                  date: event.date,
+                  title: event.title,
+                  address: event.address,
+                  numberOfGoing: event.numberOfGoing,
+                ),
+              );
+              await showSuccess(
+                isSaved ? 'Event removed from saved' : 'Event saved',
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Icon(
+                isSaved ? Icons.bookmark : Icons.bookmark_border,
+                color: Color(0xffEB5757),
+                size: 20.w,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

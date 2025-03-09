@@ -45,10 +45,10 @@ class NotificationService {
       title,
       body,
       tz.TZDateTime.from(notificationTime, tz.local),
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
-          'event_channel',
-          'Event Notifications',
+          'event_channel $id',
+          'Event Notifications $id',
           channelDescription: 'Notifies about upcoming events',
           importance: Importance.max,
           priority: Priority.high,
@@ -58,5 +58,9 @@ class NotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
       androidScheduleMode: AndroidScheduleMode.alarmClock,
     );
+  }
+
+  Future<void> cancelNotification(int id) async {
+    await _flutterLocalNotificationsPlugin.cancel(id);
   }
 }
