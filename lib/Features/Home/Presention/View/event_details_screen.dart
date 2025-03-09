@@ -20,6 +20,11 @@ class EventDetailsScreen extends StatelessWidget {
       value: getIt.get<HomeCubit>()..getEventDetails(eventId),
 
       child: BlocBuilder<HomeCubit, HomeState>(
+        buildWhen:
+            (previous, current) =>
+                previous.eventDetailsRequestStatus !=
+                    current.eventDetailsRequestStatus ||
+                previous.eventDetails != current.eventDetails,
         builder: (context, state) {
           final event = state.eventDetails;
           if (state.eventDetailsRequestStatus == RequestStatus.loading) {
